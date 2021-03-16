@@ -8,8 +8,13 @@
     <title>Teste</title>
 </head>
 <body>
+<!-- JQUERY -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SOCKET IO Client -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+
+<!-- Style -->
 <link rel="stylesheet" href="style.css">
 
 <form method="post" id="chat">
@@ -26,8 +31,10 @@
 </form>
 
 <script>
+    /* Cliente se conecta no endereço do servidor */
     var socket = io('http://localhost:3000');
 
+    /* Ao submeter o formulário de chat no cliente, as variaveis de username e mensage são preenchidas, encapsuladas no objeto messageObject */
     $('#chat').submit(function(event){
         event.preventDefault();
         var author = $('input[name=username').val();
@@ -38,16 +45,28 @@
                 author: author,
                 message: message
             };
+
+            /* O Objeto messageObject é então enviado ao servidor com o evento sendMessage a ser tratado pelo server */
             socket.emit('sendMessage',messageObject);
+
+            /* È chamada a renderização da mensagem em tela */
             renderMessage(messageObject);
             }
         });
 
-
+    /* Função responsável por renderizar a mensagem em tela */
     function renderMessage(message){
         $('.messages').append('<div class="message"><strong>' + message.author + '</strong>: '+ message.message +'</div>');
     }
 
+    /* Escuta do evento prevMenssages e renderização de cada mensagem previamente enviada */
+    socket.on('prevMessages',function (messages) {
+            for (message of messages) {
+                renderMessage(message);
+            }
+        });
+
+    /* Escuta do evento revicedMessage responsavel por receber as novas mensagens de usuários e chamar a renderização das mesmas em tela */
     socket.on('recivedMessage',function(message){
         renderMessage(message);
     })

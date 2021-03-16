@@ -32,14 +32,18 @@ app.use('/', (req, res) => {
 
 /* SOCKET  */
 
-
+var messages=[];
     /* Ao se conectar */
 io.on('connection', function (socket) {
 
 
     console.log('Socket Conectado: '+ socket.id);
 
-var messages=[];
+
+/* Ao se conectar o novo usuário recebe todas as mensagens anteriores através do evento prevMessages */
+    socket.emit('prevMessages',messages);
+
+/* Quando o servidor recebe uma mensagem, ele imprime a mensagem no console, armazena no array de mensagens e dispara em broadcast a mensagem para todos os clientes */
 socket.on('sendMessage', function(data) {
     console.log(data);
     messages.push(data);
