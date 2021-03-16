@@ -1,3 +1,11 @@
+/*
+*
+* Fonte:  Diego Fernandes - https://www.youtube.com/watch?v=-jXfKDYJJvo&t=8s
+*
+* Autor: Tiago Morais
+* Chat com socket.io
+ */
+
 const express = require('express');
 const path = require('path');
 
