@@ -31,7 +31,7 @@ app.set('view engine', 'html');
 
 /* ROTAS */
 
-app.use('/', (req, res) => {
+app.use('/', function(req, res){
   res.render('index.html');
 });
 
